@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Landing Page • Bootstrap (Arquivo Único)</title>
+
+  <!-- Bootstrap CSS (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- Icons (opcional, mas deixa mais bonito) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --bg0: #0b1020;
+      --bg1: #0e1630;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.10);
+      --stroke: rgba(255,255,255,.16);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --glow: 0 0 0 1px rgba(255,255,255,.10), 0 18px 50px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
+
+    [data-theme="light"]{
+      --bg0: #f7f8fc;
+      --bg1: #eef2ff;
+      --card: rgba(0,0,0,.04);
+      --card2: rgba(0,0,0,.06);
+      --stroke: rgba(0,0,0,.12);
+      --text: rgba(0,0,0,.86);
+      --muted: rgba(0,0,0,.62);
+      --glow: 0 0 0 1px rgba(0,0,0,.08), 0 18px 50px rgba(20, 30, 60, .12);
+    }
+
+    html, body { height: 100%; }
+    body{
+      color: var(--text);
+      background:
+        radial-gradient(1100px 700px at 10% -10%, rgba(99,102,241,.35), transparent 55%),
+        radial-gradient(900px 600px at 90% 10%, rgba(34,211,238,.30), transparent 55%),
+        radial-gradient(900px 700px at 40% 110%, rgba(244,63,94,.18), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x: hidden;
+    }
+
+    /* Glass */
+    .glass{
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,.02));
+      border: 1px solid var(--stroke);
+      box-shadow: var(--glow);
+      border-radius: var(--radius);
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar{
+      position: sticky;
+      top: 0;
+      z-index: 1020;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stroke);
+      background: rgba(10, 15, 30, .55);
+    }
+    [data-theme="light"] .navbar{
+      background: rgba(247, 248, 252, .80);
+    }
+
+    .brand-badge{
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, rgba(99,102,241,.95), rgba(34,211,238,.95));
+      box-shadow: 0 12px 30px rgba(34,211,238,.18);
+    }
+
+    .hero{
+      padding: 5rem 0 3.5rem;
+      position: relative;
+    }
+
+    .hero h1{
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+    }
+
+    .hero-sub{
+      color: var(--muted);
+      max-width: 48rem;
+    }
+
+    .pill{
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.06);
+      padding: .35rem .7rem;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    [data-theme="light"] .pill{
+      background: rgba(0,0,0,.04);
+    }
+
+    .gradient-text{
+      background: linear-gradient(90deg, #a5b4fc, #22d3ee, #fb7185);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .feature-card{
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      height: 100%;
+    }
+    .feature-card:hover{
+      transform: translateY(-6px);
+      border-color: rgba(99,102,241,.35);
+      box-shadow: 0 0 0 1px rgba(99,102,241,.20), 0 26px 70px rgba(0,0,0,.40);
+    }
+
+    .icon-chip{
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      display: grid; place-items: center;
+      background: rgba(99,102,241,.18);
+      border: 1px solid rgba(99,102,241,.28);
+    }
+
+    .section-title{
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .muted{ color: var(--muted); }
+
+    .divider{
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--stroke), transparent);
+      margin: 2.5rem 0;
+    }
+
+    .shadow-soft{ box-shadow: var(--glow); }
+
+    .btn-glow{
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 14px 45px rgba(99,102,241,.18);
+    }
+    [data-theme="light"] .btn-glow{
+      border-color: rgba(0,0,0,.10);
+    }
+
+    /* Back to top */
+    #toTop{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      display: none;
+      z-index: 1050;
+      border-radius: 999px;
+      box-shadow: var(--glow);
+    }
+
+    /* Smooth reveal animation */
+    .reveal{
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.show{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer */
+    footer{
+      border-top: 1px solid var(--stroke);
+      background: rgba(10, 15, 30, .25);
+    }
+    [data-theme="light"] footer{
+      background: rgba(255,255,255,.60);
+    }
+
+    /* Make Bootstrap inputs match glass look */
+    .form-control, .form-select, .input-group-text{
+      background: rgba(255,255,255,.06) !important;
+      border: 1px solid var(--stroke) !important;
+      color: var(--text) !important;
+    }
+    [data-theme="light"] .form-control,
+    [data-theme="light"] .form-select,
+    [data-theme="light"] .input-group-text{
+      background: rgba(0,0,0,.03) !important;
+    }
+
+    .form-control::placeholder{ color: rgba(255,255,255,.55); }
+    [data-theme="light"] .form-control::placeholder{ color: rgba(0,0,0,.45); }
+
+    .nav-pills .nav-link{
+      border-radius: 999px;
+      border: 1px solid transparent;
+      color: var(--muted);
+    }
+    .nav-pills .nav-link.active{
+      background: rgba(99,102,241,.20);
+      border-color: rgba(99,102,241,.35);
+      color: var(--text);
+    }
+
+    /* Reduce motion if user prefers */
+    @media (prefers-reduced-motion: reduce){
+      .reveal{ transition: none; }
+      .feature-card{ transition: none; }
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <!-- Navbar -->
+  <nav class="navbar py-3">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <span class="brand-badge text-white fw-bold">B</span>
+        <span class="fw-semibold">Borgonove Tech</span>
+      </a>
+
+      <div class="d-flex align-items-center gap-2">
+        <form class="d-none d-md-flex" role="search" onsubmit="return false;">
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input id="searchInput" class="form-control" type="search" placeholder="Buscar seção (ex: projetos, FAQ, contato)..." />
+          </div>
+        </form>
+
+        <button id="themeBtn" class="btn btn-outline-light btn-sm rounded-pill px-3">
+          <i class="bi bi-moon-stars me-1"></i><span>Tema</span>
+        </button>
+
+        <button class="btn btn-primary btn-sm rounded-pill px-3 btn-glow" data-bs-toggle="modal" data-bs-target="#ctaModal">
+          <i class="bi bi-lightning-charge me-1"></i>Começar
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <div class="d-flex flex-wrap gap-2 mb-3 reveal">
+            <span class="pill"><i class="bi bi-stars me-1"></i>Visual moderno</span>
+            <span class="pill"><i class="bi bi-bootstrap me-1"></i>Bootstrap 5</span>
+            <span class="pill"><i class="bi bi-code-slash me-1"></i>Arquivo único</span>
+          </div>
+
+          <h1 class="display-4 fw-bold reveal">
+            Uma página <span class="gradient-text">bem bonita</span> <br class="d-none d-md-block"/>
+            pronta pra você adaptar.
+          </h1>
+
+          <p class="lead hero-sub mt-3 reveal">
+            Navbar com busca, cards, tabs, modal, FAQ, formulário, toast, animações e tema claro/escuro —
+            tudo no mesmo arquivo (HTML + CSS + JS).
+          </p>
+
+          <div class="d-flex flex-wrap gap-2 mt-4 reveal">
+            <a href="#features" class="btn btn-primary rounded-pill px-4 btn-glow">
+              Ver recursos <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+            <a href="#projetos" class="btn btn-outline-light rounded-pill px-4">
+              Ver exemplos <i class="bi bi-grid ms-1"></i>
+            </a>
+            <button class="btn btn-outline-light rounded-pill px-4" id="toastBtn">
+              Testar toast <i class="bi bi-bell ms-1"></i>
+            </button>
+          </div>
+
+          <div class="divider reveal"></div>
+
+          <div class="row g-3 reveal">
+            <div class="col-md-4">
+              <div class="glass p-3">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-speedometer2 fs-4"></i>
+                  <div>
+                    <div class="fw-semibold">Rápido</div>
+                    <div class="small muted">CDN + leve</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="glass p-3">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-phone fs-4"></i>
+                  <div>
+                    <div class="fw-semibold">Responsivo</div>
+                    <div class="small muted">Mobile-first</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="glass p-3">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-brush fs-4"></i>
+                  <div>
+                    <div class="fw-semibold">Elegante</div>
+                    <div class="small muted">Glass + glow</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right side mock -->
+        <div class="col-lg-5">
+          <div class="glass p-4 reveal">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="fw-semibold"><i class="bi bi-activity me-2"></i>Painel</div>
+              <span class="pill">v1.0</span>
+            </div>
+
+            <div class="glass p-3 mb-3" style="background: linear-gradient(180deg, var(--card2), rgba(255,255,255,.02));">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <div class="small muted">Status</div>
+                  <div class="fw-semibold">Tudo funcionando</div>
+                </div>
+                <span class="badge text-bg-success rounded-pill px-3 py-2">Online</span>
+              </div>
+              <div class="progress mt-3" role="progressbar" aria-label="Progresso" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" style="height: 10px;">
+                <div class="progress-bar" style="width: 72%"></div>
+              </div>
+              <div class="d-flex justify-content-between small muted mt-2">
+                <span>Setup</span><span>72%</span>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-6">
+                <div class="glass p-3 feature-card">
+                  <div class="icon-chip mb-2"><i class="bi bi-ui-checks-grid"></i></div>
+                  <div class="fw-semibold">Componentes</div>
+                  <div class="small muted">Cards, tabs, modal</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="glass p-3 feature-card">
+                  <div class="icon-chip mb-2"><i class="bi bi-shield-check"></i></div>
+                  <div class="fw-semibold">Boas práticas</div>
+                  <div class="small muted">Acessível e limpo</div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="glass p-3 feature-card">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                      <div class="fw-semibold"><i class="bi bi-search me-1"></i>Busca rápida</div>
+                      <div class="small muted">Vai direto pra seção digitada</div>
+                    </div>
+                    <button class="btn btn-outline-light btn-sm rounded-pill" onclick="document.getElementById('searchInput').focus()">
+                      Usar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Features -->
+  <section id="features" class="py-5">
+    <div class="container">
+      <div class="d-flex align-items-end justify-content-between gap-3 mb-4">
+        <div>
+          <h2 class="section-title mb-1 reveal">Recursos que já vêm prontos</h2>
+          <p class="muted mb-0 reveal">Estrutura perfeita pra landing page, portfólio, curso, projeto ou evento.</p>
+        </div>
+        <a class="btn btn-outline-light rounded-pill reveal" href="#contato">
+          Falar agora <i class="bi bi-chat-dots ms-1"></i>
+        </a>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="glass p-4 feature-card">
+            <div class="icon-chip mb-3"><i class="bi bi-palette2"></i></div>
+            <h5 class="mb-2">Tema claro/escuro</h5>
+            <p class="muted mb-0">Alterna instantaneamente e salva no navegador.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="glass p-4 feature-card">
+            <div class="icon-chip mb-3"><i class="bi bi-lightning-charge"></i></div>
+            <h5 class="mb-2">CTA com modal</h5>
+            <p class="muted mb-0">Chamada bonita com formulário rápido.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="glass p-4 feature-card">
+            <div class="icon-chip mb-3"><i class="bi bi-bell"></i></div>
+            <h5 class="mb-2">Toast / notificações</h5>
+            <p class="muted mb-0">Feedback elegante sem recarregar.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="glass p-4 feature-card">
+            <div class="icon-chip mb-3"><i class="bi bi-search"></i></div>
+            <h5 class="mb-2">Busca por seções</h5>
+            <p class="muted mb-0">Digite “faq”, “contato”, “projetos” e vai direto.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="glass p-4 feature-card">
+            <div class="icon-chip mb-3"><i class="bi bi-sliders"></i></div>
+            <h5 class="mb-2">Tabs e filtros</h5>
+            <p class="muted mb-0">Alterna conteúdo sem ficar poluído.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="glass p-4 feature-card">
+            <div class="icon-chip mb-3"><i class="bi bi-arrow-up"></i></div>
+            <h5 class="mb-2">Voltar ao topo</h5>
+            <p class="muted mb-0">Melhora UX em páginas longas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projetos / Showcase -->
+  <section id="projetos" class="py-5">
+    <div class="container">
+      <div class="glass p-4 p-md-5">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-5 reveal">
+            <h2 class="section-title mb-2">Showcase com Tabs</h2>
+            <p class="muted">Uma área para destacar cursos, projetos, eventos ou serviços com visual clean.</p>
+
+            <ul class="nav nav-pills gap-2" id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-curso-tab" data-bs-toggle="pill" data-bs-target="#pills-curso" type="button" role="tab">
+                  Curso
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-projeto-tab" data-bs-toggle="pill" data-bs-target="#pills-projeto" type="button" role="tab">
+                  Projeto
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-evento-tab" data-bs-toggle="pill" data-bs-target="#pills-evento" type="button" role="tab">
+                  Evento
+                </button>
+              </li>
+            </ul>
+
+            <div class="tab-content mt-3" id="pills-tabContent">
+              <div class="tab-pane fade show active" id="pills-curso" role="tabpanel">
+                <p class="muted mb-3">Estrutura ideal para divulgar uma turma, cronograma, certificação e benefícios.</p>
+                <div class="d-flex gap-2 flex-wrap">
+                  <span class="pill"><i class="bi bi-check2-circle me-1"></i>Aulas práticas</span>
+                  <span class="pill"><i class="bi bi-check2-circle me-1"></i>Materiais</span>
+                  <span class="pill"><i class="bi bi-check2-circle me-1"></i>Certificado</span>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="pills-projeto" role="tabpanel">
+                <p class="muted mb-3">Perfeito para apresentar stack, objetivos, telas e próximos passos.</p>
+                <div class="d-flex gap-2 flex-wrap">
+                  <span class="pill"><i class="bi bi-github me-1"></i>Repo</span>
+                  <span class="pill"><i class="bi bi-diagram-3 me-1"></i>Arquitetura</span>
+                  <span class="pill"><i class="bi bi-bug me-1"></i>Issues</span>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="pills-evento" role="tabpanel">
+                <p class="muted mb-3">Divulgue palestras, programação, inscrições e local.</p>
+                <div class="d-flex gap-2 flex-wrap">
+                  <span class="pill"><i class="bi bi-calendar-event me-1"></i>Agenda</span>
+                  <span class="pill"><i class="bi bi-geo-alt me-1"></i>Local</span>
+                  <span class="pill"><i class="bi bi-ticket-perforated me-1"></i>Inscrição</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 reveal">
+              <button class="btn btn-primary rounded-pill px-4 btn-glow" data-bs-toggle="modal" data-bs-target="#ctaModal">
+                Quero adaptar <i class="bi bi-arrow-right ms-1"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="col-lg-7 reveal">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="glass p-4 feature-card">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="fw-semibold"><i class="bi bi-window me-2"></i>Seção Hero</div>
+                    <span class="badge text-bg-primary rounded-pill">Pronta</span>
+                  </div>
+                  <div class="muted small">Título + subtítulo + CTAs + cards de credenciais.</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="glass p-4 feature-card">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="fw-semibold"><i class="bi bi-card-heading me-2"></i>Cards</div>
+                    <span class="badge text-bg-primary rounded-pill">Pronto</span>
+                  </div>
+                  <div class="muted small">Layout em grid responsivo e hover elegante.</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="glass p-4 feature-card">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="fw-semibold"><i class="bi bi-question-circle me-2"></i>FAQ</div>
+                    <span class="badge text-bg-primary rounded-pill">Pronto</span>
+                  </div>
+                  <div class="muted small">Accordion com respostas organizadas.</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="glass p-4 feature-card">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="fw-semibold"><i class="bi bi-envelope me-2"></i>Contato</div>
+                    <span class="badge text-bg-primary rounded-pill">Pronto</span>
+                  </div>
+                  <div class="muted small">Formulário + validação simples + toast.</div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="glass p-4 feature-card">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                      <div class="fw-semibold"><i class="bi bi-gear me-2"></i>Personalização rápida</div>
+                      <div class="muted small">Troque nome, cores, textos e links em minutos.</div>
+                    </div>
+                    <a href="#contato" class="btn btn-outline-light btn-sm rounded-pill px-3">Ir</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-5">
+    <div class="container">
+      <div class="row align-items-end justify-content-between g-3 mb-4">
+        <div class="col-lg-7">
+          <h2 class="section-title reveal">FAQ</h2>
+          <p class="muted mb-0 reveal">Dúvidas comuns (e respostas que você pode adaptar).</p>
+        </div>
+        <div class="col-lg-5 text-lg-end reveal">
+          <span class="pill"><i class="bi bi-info-circle me-1"></i>Accordion do Bootstrap</span>
+        </div>
+      </div>
+
+      <div class="accordion glass p-2 reveal" id="faqAccordion">
+        <div class="accordion-item bg-transparent border-0">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-transparent text-reset" type="button" data-bs-toggle="collapse" data-bs-target="#q1">
+              É realmente tudo em um único arquivo?
+            </button>
+          </h2>
+          <div id="q1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body muted">
+              Sim. HTML, CSS e JS estão no mesmo arquivo, e o Bootstrap vem por CDN.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item bg-transparent border-0">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-transparent text-reset" type="button" data-bs-toggle="collapse" data-bs-target="#q2">
+              Como trocar nome, logo e cores?
+            </button>
+          </h2>
+          <div id="q2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body muted">
+              Troque o texto na navbar e, se quiser, ajuste as variáveis CSS no <code>:root</code>. A “logo” aqui é um badge,
+              mas você pode substituir por uma imagem.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item bg-transparent border-0">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-transparent text-reset" type="button" data-bs-toggle="collapse" data-bs-target="#q3">
+              Dá pra hospedar em cPanel/HostGator?
+            </button>
+          </h2>
+          <div id="q3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body muted">
+              Sim. Por ser arquivo estático, basta enviar o <code>index.html</code> para a pasta pública do site.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contato" class="py-5">
+    <div class="container">
+      <div class="glass p-4 p-md-5 reveal">
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <h2 class="section-title mb-2">Contato</h2>
+            <p class="muted">Preencha e veja a validação + toast funcionando (não envia e-mail de verdade).</p>
+
+            <form id="contactForm" class="mt-3">
+              <div class="mb-3">
+                <label class="form-label">Nome</label>
+                <input name="nome" class="form-control" placeholder="Seu nome" required minlength="2" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">E-mail</label>
+                <input name="email" type="email" class="form-control" placeholder="voce@email.com" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Assunto</label>
+                <select name="assunto" class="form-select" required>
+                  <option value="" selected disabled>Selecione...</option>
+                  <option>Projeto / Site</option>
+                  <option>Curso / Aula</option>
+                  <option>Evento</option>
+                  <option>Outro</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Mensagem</label>
+                <textarea name="mensagem" class="form-control" rows="4" placeholder="Escreva aqui..." required minlength="10"></textarea>
+              </div>
+
+              <div class="d-flex gap-2 flex-wrap">
+                <button class="btn btn-primary rounded-pill px-4 btn-glow" type="submit">
+                  Enviar <i class="bi bi-send ms-1"></i>
+                </button>
+                <button class="btn btn-outline-light rounded-pill px-4" type="button" data-bs-toggle="modal" data-bs-target="#ctaModal">
+                  Abrir modal <i class="bi bi-window ms-1"></i>
+                </button>
+              </div>
+              <div class="small muted mt-3">
+                *Dica: abra o console para ver os dados simulados do formulário.
+              </div>
+            </form>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="glass p-4 h-100">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="fw-semibold"><i class="bi bi-map me-2"></i>Informações</div>
+                <span class="pill">Exemplo</span>
+              </div>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="glass p-3">
+                    <div class="small muted">WhatsApp</div>
+                    <div class="fw-semibold">(92) 9xxxx-xxxx</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="glass p-3">
+                    <div class="small muted">E-mail</div>
+                    <div class="fw-semibold">contato@exemplo.com</div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="glass p-3">
+                    <div class="small muted">Mensagem</div>
+                    <div class="fw-semibold">Pronto para virar sua landing real 🎯</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">Quer um “modo portfólio”?</div>
+                  <div class="muted small">Eu adapto com seções, projetos e blog.</div>
+                </div>
+                <a class="btn btn-outline-light btn-sm rounded-pill px-3" href="#projetos">Ver</a>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-4">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div class="muted small">© <span id="year"></span> • Borgonove Tech • Página exemplo (Bootstrap)</div>
+        <div class="d-flex gap-2">
+          <a class="btn btn-sm btn-outline-light rounded-pill" href="#features"><i class="bi bi-grid me-1"></i>Recursos</a>
+          <a class="btn btn-sm btn-outline-light rounded-pill" href="#faq"><i class="bi bi-question-circle me-1"></i>FAQ</a>
+          <a class="btn btn-sm btn-outline-light rounded-pill" href="#contato"><i class="bi bi-envelope me-1"></i>Contato</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button id="toTop" class="btn btn-primary px-3 py-2">
+    <i class="bi bi-arrow-up"></i>
+  </button>
+
+  <!-- CTA Modal -->
+  <div class="modal fade" id="ctaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass">
+        <div class="modal-header border-0">
+          <h5 class="modal-title"><i class="bi bi-lightning-charge me-2"></i>Começar agora</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <p class="muted mb-3">Simule uma inscrição rápida (apenas demonstração).</p>
+          <div class="input-group mb-3">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input id="quickName" class="form-control" placeholder="Seu nome" />
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+            <input id="quickEmail" class="form-control" placeholder="voce@email.com" type="email"/>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-light rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary rounded-pill px-4 btn-glow" id="quickSubmit">
+            Confirmar <i class="bi bi-check2 ms-1"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="liveToast" class="toast glass" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-transparent text-reset border-0">
+        <i class="bi bi-bell me-2"></i>
+        <strong class="me-auto">Notificação</strong>
+        <small class="muted">agora</small>
+        <button type="button" class="btn-close btn-close-white ms-2 mb-1" data-bs-dismiss="toast" aria-label="Fechar"></button>
+      </div>
+      <div class="toast-body muted">
+        Tudo certo! Isso é um toast do Bootstrap.
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (bundle) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // ===== Utilities =====
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    // ===== Year =====
+    $("#year").textContent = new Date().getFullYear();
+
+    // ===== Theme toggle (persist) =====
+    const themeBtn = $("#themeBtn");
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) document.body.setAttribute("data-theme", savedTheme);
+
+    function syncThemeButton(){
+      const t = document.body.getAttribute("data-theme") || "dark";
+      const icon = themeBtn.querySelector("i");
+      if (t === "light"){
+        themeBtn.classList.remove("btn-outline-light");
+        themeBtn.classList.add("btn-outline-dark");
+        icon.className = "bi bi-sun me-1";
+      } else {
+        themeBtn.classList.remove("btn-outline-dark");
+        themeBtn.classList.add("btn-outline-light");
+        icon.className = "bi bi-moon-stars me-1";
+      }
+    }
+    syncThemeButton();
+
+    themeBtn.addEventListener("click", () => {
+      const current = document.body.getAttribute("data-theme") || "dark";
+      const next = current === "dark" ? "light" : "dark";
+      document.body.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      syncThemeButton();
+    });
+
+    // ===== Toast =====
+    const toastEl = $("#liveToast");
+    const toast = new bootstrap.Toast(toastEl, { delay: 2600 });
+
+    $("#toastBtn").addEventListener("click", () => toast.show());
+
+    // ===== Quick modal submit =====
+    $("#quickSubmit").addEventListener("click", () => {
+      const name = ($("#quickName").value || "").trim();
+      const email = ($("#quickEmail").value || "").trim();
+      console.log("[QuickSubmit]", { name, email });
+
+      // Close modal
+      const modal = bootstrap.Modal.getInstance($("#ctaModal"));
+      modal?.hide();
+
+      // Show toast
+      toastEl.querySelector(".toast-body").textContent =
+        name ? `Fechado, ${name}! Já registrei (simulado) 😉` : "Cadastro rápido confirmado (simulado) 😉";
+      toast.show();
+    });
+
+    // ===== Search to section =====
+    const aliases = {
+      "recursos": "#features",
+      "features": "#features",
+      "projetos": "#projetos",
+      "showcase": "#projetos",
+      "faq": "#faq",
+      "duvidas": "#faq",
+      "contato": "#contato",
+      "fale": "#contato",
+      "topo": "body"
+    };
+
+    function goTo(hash){
+      const el = hash === "body" ? document.body : document.querySelector(hash);
+      if (!el) return false;
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      return true;
+    }
+
+    const searchInput = $("#searchInput");
+    if (searchInput){
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter") return;
+        const q = (searchInput.value || "").trim().toLowerCase();
+        if (!q) return;
+
+        const target = aliases[q] || ("#" + q.replace(/\s+/g, ""));
+        const ok = goTo(target);
+
+        toastEl.querySelector(".toast-body").textContent =
+          ok ? `Indo para: ${target}` : "Não encontrei essa seção. Tente: projetos, faq, contato.";
+        toast.show();
+      });
+    }
+
+    // ===== Contact form (client-side) =====
+    $("#contactForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.currentTarget;
+
+      if (!form.checkValidity()){
+        form.classList.add("was-validated");
+        toastEl.querySelector(".toast-body").textContent = "Ops! Revise os campos do formulário.";
+        toast.show();
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      console.log("[Contato - Simulado]", data);
+
+      toastEl.querySelector(".toast-body").textContent =
+        `Mensagem enviada (simulado)! Obrigado, ${data.nome}.`;
+      toast.show();
+
+      form.reset();
+      form.classList.remove("was-validated");
+    });
+
+    // ===== Back to top button =====
+    const toTop = $("#toTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 700) toTop.style.display = "inline-flex";
+      else toTop.style.display = "none";
+    });
+    toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    // ===== Reveal on scroll (IntersectionObserver) =====
+    const revealEls = $$(".reveal");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((ent) => {
+        if (ent.isIntersecting){
+          ent.target.classList.add("show");
+          io.unobserve(ent.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
