@@ -16,8 +16,8 @@ module.exports = {
             }
             // await Users.create ({nome, cpf, email, senha, tipo_user});
             const user = await Users.create ({nome, cpf, email, senha, tipo_user});
-            // return res.status(201)
-            return res.status(201).json(user)
+            // return res.status(201);
+            return res.status(201).json(user);
         }catch (error){
             return res.status(500).json({message: 'Erro ao criar usuário'});
         }
