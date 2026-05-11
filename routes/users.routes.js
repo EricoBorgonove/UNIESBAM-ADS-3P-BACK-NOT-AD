@@ -7,6 +7,7 @@ const router = express.Router();
 // url / verbo http
 //criar usuário
 router.post('/', UsersController.createUser);
+//router.post('/:id', UsersController.updateUser);
 //listar todos os usuários
 router.get('/', UsersController.getAllUsers);
 //buscar um usuário pelo ID
