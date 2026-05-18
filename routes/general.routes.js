@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require ('path');
 
 router.get ('/algo', (req,res)=> {
-    res.sendFile(path.join(__dirname, '../public ','algo.html'))
+    res.sendFile(path.join(__dirname, '../public', 'algo.html'))
 });
 
 router.get ('/saude', (req, res)=>{
